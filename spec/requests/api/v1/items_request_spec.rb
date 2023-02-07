@@ -89,7 +89,7 @@ describe "Items API" do
       create_list(:item, 3, merchant_id: @merchant.id)
       
       get '/api/v1/items'
-
+      
       items = JSON.parse(response.body, symbolize_names: true)
       
       expect(items[:data].count).to eq(3)
@@ -102,14 +102,14 @@ describe "Items API" do
       }
       
       post '/api/v1/items', params: { item: new_json }
-
+      
       items = JSON.parse(response.body, symbolize_names: true)
-
+      
       expect(response.status).to eq(201)
       expect(items[:data].count).to eq(4)
-
+      
       new_item = items[:data].last
-
+      
       expect(new_item).to have_key(:id)
       expect(new_item[:id]).to be_an(String)
       
@@ -137,7 +137,53 @@ describe "Items API" do
       expect(new_item[:attributes]).to_not have_key(:updated_at)
     end
     
-    it "edits an item"
+    it "edits an item" do 
+      original_item = create(:item, merchant_id: @merchant.id)
+      
+      updated_json = {
+        "name": "Updated Item",
+        "description": "Updated item description",
+        "unit_price": 1.99,
+        "merchant_id": @merchant.id
+      }
+      
+      put "/api/v1/items/#{original_item.id}", { params: { item: updated_json } }
+      
+      item = JSON.parse(response.body, symbolize_names: true)
+      
+      expect(item).to have_key(:data)
+      expect(item[:data]).to be_a(Hash)
+      
+      item_data = item[:data]
+      
+      expect(item_data).to have_key(:id)
+      expect(item_data[:id]).to be_an(String)
+      
+      
+      expect(item_data).to have_key(:type)
+      expect(item_data[:type]).to be_a(String)
+      expect(item_data[:type]).to eq("item")
+      
+      expect(item_data).to have_key(:attributes)
+      expect(item_data[:attributes]).to be_a(Hash)
+      
+      expect(item_data[:attributes]).to have_key(:name)
+      expect(item_data[:attributes][:name]).to be_a(String)
+      expect(item_data[:attributes][:name]).to eq("Updated Item")
+      
+      expect(item_data[:attributes]).to have_key(:description)
+      expect(item_data[:attributes][:description]).to be_a(String)
+      expect(item_data[:attributes][:description]).to eq("Updated item description")
+      
+      expect(item_data[:attributes]).to have_key(:unit_price)
+      expect(item_data[:attributes][:unit_price]).to be_a(Float)
+      
+      expect(item_data[:attributes]).to have_key(:merchant_id)
+      expect(item_data[:attributes][:merchant_id]).to be_an(Integer)
+      
+      expect(item_data[:attributes]).to_not have_key(:created_at)
+      expect(item_data[:attributes]).to_not have_key(:updated_at)
+    end
     
     it "deletes an item" do
       create_list(:item, 3, merchant_id: @merchant.id)
