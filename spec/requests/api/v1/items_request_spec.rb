@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 describe "Items API" do
+  before :each do
+    @merchant = create(:merchant)
+  end
   describe "Section One RESTful endpoints" do
     it "sends a list of all items" do
-      merchant = create(:merchant)
-      create_list(:item, 3, merchant_id: merchant.id)
+      create_list(:item, 3, merchant_id: @merchant.id)
 
       get '/api/v1/items'
 
@@ -31,7 +33,11 @@ describe "Items API" do
       end
     end
 
-    it "sends a single item"
+    it "sends a single item" do
+      id = create(:item, merchant_id: @merchant.id).id
+
+      get "/api/v1/items/#{id}"
+    end
 
     it "creates and item"
 
