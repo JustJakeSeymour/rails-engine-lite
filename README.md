@@ -8,7 +8,7 @@ This is an API based project, to learn how to parse json from databases using ty
 [ ] Items
   [x] get ...'/items'
   [x] get ...'/items/:id'
-  [ ] post ...'/items'
+  [x] post ...'/items'
   [ ] patch ...'/items/:id'
   [ ] destroy ...'/items/:id'
   [ ] get ...'/items/:id/merchant'

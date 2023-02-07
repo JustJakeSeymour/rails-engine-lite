@@ -4,7 +4,8 @@ Rails.application.routes.draw do
       resources :merchants, only: [:index, :show] do
         resources :items, only: [:index], controller: "/api/v1/merchants/items"
       end
-      resources :items, only: [:index, :show, :create]
+      resources :items, except: [:new, :edit]
+      delete "items", to: "items#delete"
     end
   end
 end

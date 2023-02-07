@@ -139,7 +139,25 @@ describe "Items API" do
     
     it "edits an item"
     
-    it "deletes an item"
+    it "deletes an item" do
+      create_list(:item, 3, merchant_id: @merchant.id)
+      delete_item = create(:item, merchant_id: @merchant.id)
+
+      get '/api/v1/items'
+      
+      items = JSON.parse(response.body, symbolize_names: true)
+      expect(items[:data].count).to eq(4)
+      
+      delete '/api/v1/items', params: { id: delete_item.id }
+      
+      expect(response.status).to eq(204)
+      
+      get '/api/v1/items'
+      items = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response.status).to eq(200)
+      expect(items[:data].count).to eq(3)
+    end
     
     it "merchant information given item ID"
   end
