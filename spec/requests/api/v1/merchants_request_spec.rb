@@ -17,6 +17,9 @@ describe "Merchants API" do
 
         expect(merchant).to have_key(:name)
         expect(merchant[:name]).to be_a(String)
+
+        expect(merchant).to_not have_key(:created_at)
+        expect(merchant).to_not have_key(:updated_at)
       end
     end
     
@@ -29,14 +32,17 @@ describe "Merchants API" do
       
       expect(merchant).to have_key(:id)
       expect(merchant[:id]).to be_an(Integer)
-  
+      
       expect(merchant).to have_key(:name)
       expect(merchant[:name]).to be_a(String)
+      
+      expect(merchant).to_not have_key(:created_at)
+      expect(merchant).to_not have_key(:updated_at)
     end
-
+    
     it "sends all items related to a merchant ID"
   end
-
+  
   describe "Section Two Non-RESTFUL endpoints" do
     it "either returns all merchants via search or one via search"
   end
