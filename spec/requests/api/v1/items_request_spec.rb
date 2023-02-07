@@ -205,7 +205,35 @@ describe "Items API" do
       expect(items[:data].count).to eq(3)
     end
     
-    it "merchant information given item ID"
+    it "merchant information given item ID" do
+      other_merchant = create(:merchant)
+      other_item = create(:item, merchant_id: other_merchant.id)
+
+      get "/api/v1/items/#{other_item.id}/merchant"
+
+      merchant = JSON.parse(response.body, symbolize_names: true)
+
+      expect(merchant).to have_key(:data)
+      expect(merchant[:data]).to be_a(Hash)
+
+      expect(merchant[:data]).to have_key(:id)
+      expect(merchant[:data][:id]).to be_an(String)
+      expect(merchant[:data][:id].to_i).to eq(other_merchant.id)
+      
+      expect(merchant[:data]).to have_key(:type)
+      expect(merchant[:data][:type]).to be_a(String)
+      expect(merchant[:data][:type]).to eq("merchant")
+      
+      expect(merchant[:data]).to have_key(:attributes)
+      expect(merchant[:data][:attributes]).to be_a(Hash)
+      
+      expect(merchant[:data][:attributes]).to have_key(:name)
+      expect(merchant[:data][:attributes][:name]).to be_a(String)
+      expect(merchant[:data][:attributes][:name]).to eq(other_merchant.name)
+      
+      expect(merchant[:data][:attributes]).to_not have_key(:created_at)
+      expect(merchant[:data][:attributes]).to_not have_key(:updated_at)
+    end
   end
 
   describe "Section Two Non-RESTful endpoints" do
