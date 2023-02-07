@@ -1,24 +1,29 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is an API based project, to learn how to parse json from databases using typical rails techniques.
 
-Things you may want to cover:
+## API Endpoints:
 
-* Ruby version
+/api/v1...
+[ ] Items
+  [ ] get ...'/items'
+  [ ] get ...'/items/:id'
+  [ ] post ...'/items'
+  [ ] patch ...'/items/:id'
+  [ ] destroy ...'/items/:id'
+  [ ] get ...'/items/:id/merchant'
+  [ ] search endpoints:
+    [ ] get ...'/items/find?name=(name)' or 'items/find?min_price=(num)', etc.
 
-* System dependencies
+[ ] Merchants
+  [ ] get ...'/merchants'
+  [ ] get ...'/merchants/:id'
+  [ ] get ...'/merchants/:id/items'
+  [ ] search endpoints:
+    [ ] get ...'/merchants/find?name=(name)'
 
-* Configuration
+## Learned concepts:
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[ ] Testing using Postman.
+[ ] Serializing data to JSON guidelines for consumption.
+[ ] Using additional controllers for 'non-RESTful' actions.
