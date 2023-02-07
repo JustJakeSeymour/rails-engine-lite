@@ -40,6 +40,9 @@ describe "Items API" do
         
         expect(item[:attributes]).to have_key(:merchant_id)
         expect(item[:attributes][:merchant_id]).to be_an(Integer)
+
+        expect(item[:attributes]).to_not have_key(:created_at)
+        expect(item[:attributes]).to_not have_key(:updated_at)
       end
     end
     
@@ -77,6 +80,9 @@ describe "Items API" do
       
       expect(item_data[:attributes]).to have_key(:merchant_id)
       expect(item_data[:attributes][:merchant_id]).to be_an(Integer)
+
+      expect(item_data[:attributes]).to_not have_key(:created_at)
+      expect(item_data[:attributes]).to_not have_key(:updated_at)
     end
 
     it "creates and item"
