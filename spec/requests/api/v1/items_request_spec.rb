@@ -101,9 +101,8 @@ describe "Items API" do
         "merchant_id": @merchant.id
       }
       
-      post '/api/v1/items'
-      require 'pry'; binding.pry
-      
+      post '/api/v1/items', params: { item: new_json }
+
       items = JSON.parse(response.body, symbolize_names: true)
       expect(items[:data].count).to eq(4)
     end
