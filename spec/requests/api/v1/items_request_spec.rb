@@ -104,7 +104,37 @@ describe "Items API" do
       post '/api/v1/items', params: { item: new_json }
 
       items = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response.status).to eq(201)
       expect(items[:data].count).to eq(4)
+
+      new_item = items[:data].last
+
+      expect(new_item).to have_key(:id)
+      expect(new_item[:id]).to be_an(String)
+      
+      
+      expect(new_item).to have_key(:type)
+      expect(new_item[:type]).to be_a(String)
+      expect(new_item[:type]).to eq("item")
+      
+      expect(new_item).to have_key(:attributes)
+      expect(new_item[:attributes]).to be_a(Hash)
+      
+      expect(new_item[:attributes]).to have_key(:name)
+      expect(new_item[:attributes][:name]).to be_a(String)
+      
+      expect(new_item[:attributes]).to have_key(:description)
+      expect(new_item[:attributes][:description]).to be_a(String)
+      
+      expect(new_item[:attributes]).to have_key(:unit_price)
+      expect(new_item[:attributes][:unit_price]).to be_a(Float)
+      
+      expect(new_item[:attributes]).to have_key(:merchant_id)
+      expect(new_item[:attributes][:merchant_id]).to be_an(Integer)
+      
+      expect(new_item[:attributes]).to_not have_key(:created_at)
+      expect(new_item[:attributes]).to_not have_key(:updated_at)
     end
     
     it "edits an item"

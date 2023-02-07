@@ -9,7 +9,7 @@ class Api::V1::ItemsController < ApplicationController
   
   def create
     Item.create!(item_params)
-    render json: ItemSerializer.new(Item.all)
+    render json: ItemSerializer.new(Item.all), status: 201
   end
 
 private
