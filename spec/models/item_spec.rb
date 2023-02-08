@@ -11,6 +11,14 @@ RSpec.describe Item, type: :model do
     end
 
     describe "find_all_by_name_or_price" do
+      context "params check" do
+        it "returns nil if params for :name and a price are supplied" do
+          params = { name: "example", min_price: 40 }
+
+          expect(Item.find_all_by_name_or_price(params)).to eq nil
+        end
+      end
+      
       describe "name_search" do
         it "find all by name" do
           result_items = create_list(:item, 3, merchant_id: @merchant.id)
@@ -19,11 +27,11 @@ RSpec.describe Item, type: :model do
           end
           non_result_items = create_list(:item, 2, merchant_id: @merchant.id, name: "nope")
 
-          search = {name: "atc"}
+          params = {name: "atc"}
 
-          expect(Item.find_all_by_name_or_price(search).count).to eq(3)
-          expect(Item.find_all_by_name_or_price(search).include?(result_items[0])).to be true
-          expect(Item.find_all_by_name_or_price(search).include?(non_result_items[0])).to be false
+          expect(Item.find_all_by_name_or_price(params).count).to eq(3)
+          expect(Item.find_all_by_name_or_price(params).include?(result_items[0])).to be true
+          expect(Item.find_all_by_name_or_price(params).include?(non_result_items[0])).to be false
         end
       end
       
@@ -35,35 +43,35 @@ RSpec.describe Item, type: :model do
         end
         
         it "find all by min price" do
-          search = { min_price: 50 }
+          params = { min_price: 50 }
 
-          expect(Item.find_all_by_name_or_price(search).count).to eq(4)
+          expect(Item.find_all_by_name_or_price(params).count).to eq(4)
 
-          expect(Item.find_all_by_name_or_price(search).include?(@medium_items[0])).to be true
-          expect(Item.find_all_by_name_or_price(search).include?(@expensive_items[0])).to be true
+          expect(Item.find_all_by_name_or_price(params).include?(@medium_items[0])).to be true
+          expect(Item.find_all_by_name_or_price(params).include?(@expensive_items[0])).to be true
           
-          expect(Item.find_all_by_name_or_price(search).include?(@cheap_items[0])).to be false
+          expect(Item.find_all_by_name_or_price(params).include?(@cheap_items[0])).to be false
         end
         
         it "find all by max price" do
-          search = { max_price: 50 }
+          params = { max_price: 50 }
           
-          expect(Item.find_all_by_name_or_price(search).count).to eq(5)
+          expect(Item.find_all_by_name_or_price(params).count).to eq(5)
           
-          expect(Item.find_all_by_name_or_price(search).include?(@medium_items[0])).to be true
-          expect(Item.find_all_by_name_or_price(search).include?(@cheap_items[0])).to be true
+          expect(Item.find_all_by_name_or_price(params).include?(@medium_items[0])).to be true
+          expect(Item.find_all_by_name_or_price(params).include?(@cheap_items[0])).to be true
   
-          expect(Item.find_all_by_name_or_price(search).include?(@expensive_items[0])).to be false
+          expect(Item.find_all_by_name_or_price(params).include?(@expensive_items[0])).to be false
         end
         
         it "find all between min and max price" do
-          search = { min_price: 30, max_price: 60 }
-          expect(Item.find_all_by_name_or_price(search).count).to eq(2)
+          params = { min_price: 30, max_price: 60 }
+          expect(Item.find_all_by_name_or_price(params).count).to eq(2)
           
-          expect(Item.find_all_by_name_or_price(search).include?(@medium_items[0])).to be true
+          expect(Item.find_all_by_name_or_price(params).include?(@medium_items[0])).to be true
 
-          expect(Item.find_all_by_name_or_price(search).include?(@cheap_items[0])).to be false
-          expect(Item.find_all_by_name_or_price(search).include?(@expensive_items[0])).to be false
+          expect(Item.find_all_by_name_or_price(params).include?(@cheap_items[0])).to be false
+          expect(Item.find_all_by_name_or_price(params).include?(@expensive_items[0])).to be false
         end
       end
     end
