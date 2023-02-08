@@ -244,7 +244,7 @@ describe "Items API" do
       end
       non_result_items = create_list(:item, 2, merchant_id: @merchant.id, name: "nope")
       
-      get "/api/v1/items/find?name=atc"
+      get "/api/v1/items/find_all?name=atc"
       
       expect(response).to be_successful
       
@@ -283,6 +283,12 @@ describe "Items API" do
       end
     end
     
-    it "search via min / max price"
+    it "search via min / max price" do
+      cheap_items = create_list(:item, 3, merchant_id: @merchant.id, unit_price: 25.0)
+      medium_items = create_list(:item, 2, merchant_id: @merchant.id, unit_price: 50.0)
+      expensive_items = create_list(:item, 2, merchant_id: @merchant.id, unit_price: 75.0)
+
+      get "/api/v1/items/find?min=50"
+    end
   end
 end

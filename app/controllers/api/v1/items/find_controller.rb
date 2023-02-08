@@ -1,6 +1,5 @@
 class Api::V1::Items::FindController < ApplicationController
   def index
-    render json: ItemSerializer.new(Item.name_search(params[:name]))
-    # pass params[:min] && params[:max] to use conditions in helper method
+    render json: ItemSerializer.new(Item.price_search(params[:min_price], params[:max_price]))
   end
 end
