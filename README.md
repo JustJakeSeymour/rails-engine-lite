@@ -19,9 +19,10 @@ This is an API based project, to learn how to parse json from databases using ty
   [x] get ...'/merchants'
   [x] get ...'/merchants/:id'
   [x] get ...'/merchants/:id/items'
-  [ ] search endpoints:
-    [ ] get ...'/merchants/find?name=(name)'
+  [x] search endpoints:
+    [x] get ...'/merchants/find?name=(name)'
 
+** come back for sad paths **
 ## Learned concepts:
 
 [ ] Testing using Postman.

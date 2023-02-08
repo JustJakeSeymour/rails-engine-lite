@@ -237,7 +237,21 @@ describe "Items API" do
   end
 
   describe "Section Two Non-RESTful endpoints" do
-    it "return one item via search OR all items via search"
+    it "return one item via search OR all items via search" do
+      result_items = create_list(:item, 3, merchant_id: @merchant.id)
+      result_items.each do |item|
+        item.name = item.name + "match"
+      end
+      non_result_items = create_list(:item, 2, merchant_id: @merchant.id, name: "nope")
+
+      get "/api/v1/items/find?name=atc"
+
+      expect(response).to be_successful
+
+      items = JSON.parse(response.body, symbolize_names: true)
+
+      require 'pry'; binding.pry
+    end
 
     it "search via min / max price"
   end
