@@ -148,7 +148,6 @@ describe "Merchants API" do
       
       expect(merchant_data[:attributes]).to_not have_key(:created_at)
       expect(merchant_data[:attributes]).to_not have_key(:updated_at)
-      
     end
   end
 end
