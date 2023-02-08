@@ -131,8 +131,8 @@ describe "Merchants API" do
       
       expect(merchant_data).to have_key(:id)
       expect(merchant_data[:id]).to be_an(String)
-      expect(merchant_data[:id]).to eq(my_merchant.id)
-      expect(merchant_data[:id]).to_not eq(other_merchant.id)
+      expect(merchant_data[:id].to_i).to eq(my_merchant.id)
+      expect(merchant_data[:id].to_i).to_not eq(other_merchant.id)
       
       expect(merchant_data).to have_key(:type)
       expect(merchant_data[:type]).to be_a(String)
