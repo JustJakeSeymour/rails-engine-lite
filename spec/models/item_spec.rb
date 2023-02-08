@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do
-  define "associations" do
+  describe "associations" do
     it { should belong_to(:merchant) } 
   end
 
-  define "class methods" do
+  describe "class methods" do
     before :each do
       @merchant = create(:merchant)
     end
