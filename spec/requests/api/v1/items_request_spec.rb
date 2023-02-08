@@ -94,8 +94,8 @@ describe "Items API" do
       expect(items[:data].count).to eq(3)
       
       new_json = {
-        "name": "Item",
-        "description": "New Item",
+        "name": "New Item Name",
+        "description": "New Item Description",
         "unit_price": 1.99,
         "merchant_id": @merchant.id
       }
@@ -123,9 +123,11 @@ describe "Items API" do
       
       expect(new_item[:data][:attributes]).to have_key(:name)
       expect(new_item[:data][:attributes][:name]).to be_a(String)
+      expect(new_item[:data][:attributes][:name]).to eq("New Item Name")
       
       expect(new_item[:data][:attributes]).to have_key(:description)
       expect(new_item[:data][:attributes][:description]).to be_a(String)
+      expect(new_item[:data][:attributes][:description]).to eq("New Item Description")
       
       expect(new_item[:data][:attributes]).to have_key(:unit_price)
       expect(new_item[:data][:attributes][:unit_price]).to be_a(Float)
@@ -288,7 +290,11 @@ describe "Items API" do
       medium_items = create_list(:item, 2, merchant_id: @merchant.id, unit_price: 50.0)
       expensive_items = create_list(:item, 2, merchant_id: @merchant.id, unit_price: 75.0)
 
-      get "/api/v1/items/find?min=50"
+      get "/api/v1/items/find_all?min_price=50"
+
+      require 'pry'; binding.pry
     end
+
+    
   end
 end

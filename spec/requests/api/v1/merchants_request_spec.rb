@@ -123,7 +123,7 @@ describe "Merchants API" do
       expect(response).to be_successful 
       
       merchant = JSON.parse(response.body, symbolize_names: true)
-
+      
       expect(merchant).to have_key(:data)
       expect(merchant[:data]).to be_a(Hash)
       
@@ -148,6 +148,17 @@ describe "Merchants API" do
       
       expect(merchant_data[:attributes]).to_not have_key(:created_at)
       expect(merchant_data[:attributes]).to_not have_key(:updated_at)
+    end
+  end
+  
+  describe "sad path error" do
+    context "error" do
+      it "rescues standard error if bad ID" do
+        
+        get "/api/v1/merchants/0/items"
+        
+        expect(response.body).to eq("status: 400")         
+      end
     end
   end
 end
