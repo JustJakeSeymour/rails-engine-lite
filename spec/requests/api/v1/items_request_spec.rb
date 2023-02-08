@@ -188,7 +188,7 @@ describe "Items API" do
     it "deletes an item" do
       create_list(:item, 3, merchant_id: @merchant.id)
       delete_item = create(:item, merchant_id: @merchant.id)
-
+      
       get '/api/v1/items'
       
       items = JSON.parse(response.body, symbolize_names: true)
@@ -200,7 +200,7 @@ describe "Items API" do
       
       get '/api/v1/items'
       items = JSON.parse(response.body, symbolize_names: true)
-
+      
       expect(response.status).to eq(200)
       expect(items[:data].count).to eq(3)
     end
@@ -208,14 +208,14 @@ describe "Items API" do
     it "merchant information given item ID" do
       other_merchant = create(:merchant)
       other_item = create(:item, merchant_id: other_merchant.id)
-
+      
       get "/api/v1/items/#{other_item.id}/merchant"
-
+      
       merchant = JSON.parse(response.body, symbolize_names: true)
-
+      
       expect(merchant).to have_key(:data)
       expect(merchant[:data]).to be_a(Hash)
-
+      
       expect(merchant[:data]).to have_key(:id)
       expect(merchant[:data][:id]).to be_an(String)
       expect(merchant[:data][:id].to_i).to eq(other_merchant.id)
@@ -235,24 +235,54 @@ describe "Items API" do
       expect(merchant[:data][:attributes]).to_not have_key(:updated_at)
     end
   end
-
+  
   describe "Section Two Non-RESTful endpoints" do
     it "return one item via search OR all items via search" do
       result_items = create_list(:item, 3, merchant_id: @merchant.id)
       result_items.each do |item|
-        item.name = item.name + "match"
+        item.update(name: item.name + "match")
       end
       non_result_items = create_list(:item, 2, merchant_id: @merchant.id, name: "nope")
-
+      
       get "/api/v1/items/find?name=atc"
-
+      
       expect(response).to be_successful
-
+      
       items = JSON.parse(response.body, symbolize_names: true)
-
-      require 'pry'; binding.pry
+      
+      expect(items).to have_key(:data)
+      expect(items[:data]).to be_an(Array)
+      expect(items[:data].count).to eq(3)
+      
+      items[:data].each do |item| 
+        expect(item).to have_key(:id)
+        expect(item[:id]).to be_a(String)
+        
+        
+        expect(item).to have_key(:type)
+        expect(item[:type]).to be_a(String)
+        expect(item[:type]).to eq("item")
+        
+        expect(item).to have_key(:attributes)
+        expect(item[:attributes]).to be_a(Hash)
+        
+        expect(item[:attributes]).to have_key(:name)
+        expect(item[:attributes][:name]).to be_a(String)
+        
+        expect(item[:attributes]).to have_key(:description)
+        expect(item[:attributes][:description]).to be_a(String)
+        
+        expect(item[:attributes]).to have_key(:unit_price)
+        expect(item[:attributes][:unit_price]).to be_a(Float)
+        
+        expect(item[:attributes]).to have_key(:merchant_id)
+        expect(item[:attributes][:merchant_id]).to be_an(Integer)
+        
+        expect(item[:attributes]).to_not have_key(:created_at)
+        expect(item[:attributes]).to_not have_key(:updated_at)
+      end
     end
-
+    
     it "search via min / max price"
   end
 end
