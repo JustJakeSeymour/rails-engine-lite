@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       resources :merchants, only: [:index, :show] do
         resources :items, only: [:index], controller: "/api/v1/merchants/items"
       end
+
+      get "items/find_all", to: "/api/v1/items/find_all#index"
       resources :items, except: [:new, :edit] do
         resources :merchant, only: [:index], controller: "/api/v1/items/merchant"
       end
