@@ -10,6 +10,6 @@ private
   def find_merchant
     @merchant = Merchant.find(params[:merchant_id])
   rescue ActiveRecord::RecordNotFound => e
-    render json: e.message, status: 404
+    render json: {'errors' => e.message}, status: 404
   end
 end
