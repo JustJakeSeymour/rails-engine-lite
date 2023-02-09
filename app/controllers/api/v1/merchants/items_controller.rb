@@ -1,9 +1,15 @@
 class Api::V1::Merchants::ItemsController < ApplicationController
+  before_action :find_merchant
+  
   def index
-    merchant_items = Item.find(merchant_id: params[:merchant_id])
+    merchant_items = Item.where(merchant_id: @merchant)
     render json: ItemSerializer.new(merchant_items)
+  end
 
-    rescue ActiveRecord::RecordNotFound => e
-      render json: ItemSerializer.render(e.message)
+private
+  def find_merchant
+    @merchant = Merchant.find(params[:merchant_id])
+  rescue ActiveRecord::RecordNotFound => e
+    render json: e.message, status: 404
   end
 end

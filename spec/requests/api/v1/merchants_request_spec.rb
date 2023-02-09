@@ -157,7 +157,8 @@ describe "Merchants API" do
         
         get "/api/v1/merchants/0/items"
         
-        expect(response.body).to eq("status: 400")         
+        expect(response.body).to eq("Couldn't find Merchant with 'id'=0")
+        expect(response.status).to eq(404)         
       end
     end
   end
