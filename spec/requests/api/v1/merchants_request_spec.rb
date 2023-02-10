@@ -114,7 +114,7 @@ describe "Merchants API" do
   end
   
   describe "Section Two Non-RESTFUL endpoints" do
-    it "either returns a single merchant via search" do
+    it "returns a single merchant via search" do
       my_merchant = create(:merchant)
       other_merchant = create(:merchant)
       
@@ -151,7 +151,7 @@ describe "Merchants API" do
     end
   end
   
-  describe "sad path error" do
+  describe "sad path" do
     context "error" do
       it "rescues standard error if bad ID" do
         
@@ -161,6 +161,20 @@ describe "Merchants API" do
         
         expect(errors[:errors]).to eq("Couldn't find Merchant with 'id'=0")
         expect(response.status).to eq(404)         
+      end
+    end
+
+    context "merchant search no fragment matched" do
+      it "returns object if no match" do
+        merchants = create_list(:merchant, 3, name: "example merchants")
+        
+        get "/api/v1/merchants/find?name=NOMATCH"
+        expect(response).to be_successful 
+        
+        merchant = JSON.parse(response.body, symbolize_names: true)
+        
+        expect(merchant).to have_key(:data)
+        expect(merchant[:data]).to be(nil)     
       end
     end
   end
