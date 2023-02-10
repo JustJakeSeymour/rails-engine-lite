@@ -8,8 +8,10 @@ class Api::V1::Merchants::ItemsController < ApplicationController
 
 private
   def find_merchant
-    @merchant = Merchant.find(params[:merchant_id])
-  rescue ActiveRecord::RecordNotFound => e
-    render json: {'errors' => e.message}, status: 404
+    begin
+      @merchant = Merchant.find(params[:merchant_id])
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {'errors' => e.message}, status: 404
+    end
   end
 end
